@@ -34,7 +34,14 @@ for branch in "${branches[@]}"; do
     git push origin "$branch"
   fi
 done
-
+# ...existing code...
+    if [ -z "$upstream" ]; then
+      echo "🔧 尚未設定 upstream，正在設定..."
+      git push --set-upstream origin "$branch" || { echo "❌ push 失敗"; exit 1; }
+    else
+      git push origin "$branch" || { echo "❌ push 失敗"; exit 1; }
+    fi
+# ...existing code...
 # ✅ 自動開啟 GitHub 頁面
 remote_url=$(git config --get remote.origin.url)
 web_url=$(echo "$remote_url" | sed -E 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//')
